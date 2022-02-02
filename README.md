@@ -20,7 +20,7 @@ $ sudo sh setup.sh
 
 ## Usage
 
-```sh
+```
 Usage:
 
     pwdg [-e | -a] <password_length>
