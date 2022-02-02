@@ -23,7 +23,7 @@ $ sudo sh setup.sh
 ```sh
 Usage:
 
-    passh [-e | -a] <password_length>
+    pwdg [-e | -a] <password_length>
 
 Options:
 
