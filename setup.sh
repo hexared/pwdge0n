@@ -1,21 +1,21 @@
 #!/bin/sh
 # SPDX-License-Identifier: GPL-3.0-only
 #
-# This file is part of the distrobox project: https://github.com/89luca89/distrobox
+# This file is part of the pwdge0n project: https://github.com/j4ckr3d/pwdge0n
 #
-# Copyright (C) 2021 distrobox contributors
+# Copyright (C) 2021 pwdge0n contributors
 #
-# distrobox is free software; you can redistribute it and/or modify it
+# pwdge0n is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License version 3
 # as published by the Free Software Foundation.
 #
-# distrobox is distributed in the hope that it will be useful, but
+# pwdge0n is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 # General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with distrobox; if not, see <http://www.gnu.org/licenses/>.
+# along with pwdge0n; if not, see <http://www.gnu.org/licenses/>.
 
 cat <<EOF
 Which version do you want to install?
@@ -32,7 +32,7 @@ case $RES in
 	EXTENSION="sh"
 	;;
 2 | python)
-	PYTHON=$(which python3 || 0)
+	PYTHON=$(command python3)
 	if [ -z $PYTHON ]; then
 		echo "You need to install python3 first.\nWanna set up sh version?[Y/n]"
 		read -r R
