@@ -33,7 +33,7 @@ case $RES in
 	;;
 2 | python)
 	PYTHON=$(which python3 || 0)
-	if ![ -z $PYTHON ]; then
+	if [ -z $PYTHON ]; then
 		echo "You need to install python3 first.\nWanna set up sh version?[Y/n]"
 		read -r R
 		case $R in
@@ -55,6 +55,33 @@ case $RES in
 esac
 
 chmod +x "./pwdge0n.$EXTENSION"
-ln -s "$PWD"/"pwdge0n.$EXTENSION" /usr/local/bin/pwdg || exit 1
+ln -s "$PWD"/"pwdge0n.$EXTENSION" /usr/local/bin/pwdg || EXISTS=1
+if ! [ -z $EXISTS ]; then
+	AEXT=$(ls -l /usr/local/bin/pwdg | cut -d'.' -f2)
+	case $AEXT in
+	py)
+		VERSION="python"
+		;;
+	sh)
+		VERSION="sh"
+		;;
+	*)
+		VERSION="an unrecognized ($AEXT)"
+		;;
+	esac
+	echo "You have $VERSION version installed."
+	echo "Do you want to substitute the actual version?[Y/n]"
+	read -r R
+	case $R in
+	n | N | no | NO)
+		echo "Ok then. Bye!"
+		exit 0
+		;;
+	y | Y | yes | YES | *)
+		rm -r /usr/local/bin/pwdg
+		ln -s "$PWD"/"pwdge0n.$EXTENSION" /usr/local/bin/pwdg
+		;;
+	esac
+fi
 echo "Done.\n"
 pwdg
