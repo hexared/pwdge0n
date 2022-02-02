@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with distrobox; if not, see <http://www.gnu.org/licenses/>.
 
-cat << EOF
+cat <<EOF
 Which version do you want to install?
 
 1) sh
@@ -28,30 +28,30 @@ echo "\nOption: "
 read -r RES
 
 case $RES in
-    1 | sh )
-        EXTENSION="sh"
-        ;;
-    2 | python)
-        PYTHON=$(which python3 || 0)
-        if ![ -z $PYTHON ]; then
-            echo "You need to install python3 first.\nWanna set up sh version?[Y/n]"
-            read -r R
-            case $R in
-                n | N | no | NO)
-                    exit 1
-                    ;;
-                y | Y | yes | YES | *)
-                    EXTENSION="sh"
-                    ;;
-            esac
-        else
-            EXTENSION="py"
-        fi
-        ;;
-    *)
-        echo "Please, choose one of the listed options."
-        exit 1
-        ;;
+1 | sh)
+	EXTENSION="sh"
+	;;
+2 | python)
+	PYTHON=$(which python3 || 0)
+	if ![ -z $PYTHON ]; then
+		echo "You need to install python3 first.\nWanna set up sh version?[Y/n]"
+		read -r R
+		case $R in
+		n | N | no | NO)
+			exit 1
+			;;
+		y | Y | yes | YES | *)
+			EXTENSION="sh"
+			;;
+		esac
+	else
+		EXTENSION="py"
+	fi
+	;;
+*)
+	echo "Please, choose one of the listed options."
+	exit 1
+	;;
 esac
 
 chmod +x "./pwdge0n.$EXTENSION"
