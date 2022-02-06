@@ -94,7 +94,6 @@ extract() {
     RNDM=$(cat /dev/urandom | tr -cd '1-9' | head -c 5)
 	RAND=$((RNDM % ${#1} / 2))
 	for i in $1; do
-                set -o noglob
 		if [ $INDEX -eq $RAND ]; then
 			printf "%s" "$i"
 		fi
@@ -142,6 +141,7 @@ genpass() {
 			fi
 			;;
 		esac
+                set -o noglob
 		PASSWORD="$PASSWORD$CHAR"
 	done
     if [ -z $(checkpass "$PASSWORD") ]; then
