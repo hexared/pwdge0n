@@ -24,7 +24,7 @@ Which version do you want to install?
 2) python
 EOF
 
-echo "\nOption: "
+printf >&2 "\nOption: "
 read -r RES
 
 case $RES in
@@ -34,7 +34,7 @@ case $RES in
 2 | python)
 	PYTHON=$(command python3)
 	if [ -z $PYTHON ]; then
-		echo "You need to install python3 first.\nWanna set up sh version?[Y/n]"
+		printf >&2 "You need to install python3 first.\nWanna set up sh version?[Y/n] "
 		read -r R
 		case $R in
 		n | N | no | NO)
@@ -49,7 +49,7 @@ case $RES in
 	fi
 	;;
 *)
-	echo "Please, choose one of the listed options."
+	printf >&2 "Please, choose one of the listed options."
 	exit 1
 	;;
 esac
@@ -57,7 +57,7 @@ esac
 chmod +x "./pwdge0n.$EXTENSION"
 ln -s "$PWD"/"pwdge0n.$EXTENSION" /usr/local/bin/pwdg || EXISTS=1
 if ! [ -z $EXISTS ]; then
-	AEXT=$(ls -l /usr/local/bin/pwdg | cut -d'.' -f2)
+	AEXT=$(ls -l /usr/local/bin/pwdg | tr "." "\n" | tail -n1)
 	case $AEXT in
 	py)
 		VERSION="python"
@@ -69,12 +69,12 @@ if ! [ -z $EXISTS ]; then
 		VERSION="an unrecognized ($AEXT)"
 		;;
 	esac
-	echo "You have $VERSION version installed."
-	echo "Do you want to substitute the actual version?[Y/n]"
+	printf >&2 "You have $VERSION version installed."
+	printf >&2 "Do you want to substitute the actual version?[Y/n] "
 	read -r R
 	case $R in
 	n | N | no | NO)
-		echo "Ok then. Bye!"
+		printf >&2 "Ok then. Bye!"
 		exit 0
 		;;
 	y | Y | yes | YES | *)
@@ -83,5 +83,5 @@ if ! [ -z $EXISTS ]; then
 		;;
 	esac
 fi
-echo "Done.\n"
+printf >&2 "Done.\n"
 pwdg

@@ -37,11 +37,11 @@ EOF
 }
 
 if [ $# -gt 3 ]; then
-	echo "Too many arguments.\n"
+	printf >&2 "Too many arguments.\n"
 	show_help
 	exit 1
 elif [ $# -lt 1 ]; then
-	echo "You must specify at least one argument (the pasword length for example...).\n"
+	printf >&2 "You must specify at least one argument (the pasword length for example...).\n"
 	show_help
 	exit 1
 fi
@@ -91,7 +91,8 @@ done
 # Extract character from one of the array
 extract() {
 	INDEX=0
-	RAND=$((RANDOM % ${#1} / 2))
+    RNDM=$(cat /dev/urandom | tr -cd '1-9' | head -c 5)
+	RAND=$((RNDM % ${#1} / 2))
 	for i in $1; do
 		if [ $INDEX -eq $RAND ]; then
 			printf "%s" "$i"
@@ -121,7 +122,8 @@ checkpass() {
 # Main function used to generate password
 genpass() {
 	for i in $(seq 1 $LENGTH); do
-		case $((RANDOM % MAX)) in
+        RNDM=$(cat /dev/urandom | tr -cd '1-9' | head -c 5)
+		case $((RNDM % MAX)) in
 		0)
 			CHAR=$(extract "$LOWER")
 			;;
@@ -141,8 +143,7 @@ genpass() {
 		esac
 		PASSWORD="$PASSWORD$CHAR"
 	done
-	checkpass "$PASSWORD"
-	if ! [ -z $? ]; then
+    if [ -z $(checkpass "$PASSWORD") ]; then
 		printf "%s\n" "$PASSWORD"
 	else
 		genpass
