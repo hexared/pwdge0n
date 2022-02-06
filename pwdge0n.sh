@@ -58,7 +58,7 @@ E=0
 # Arguments parsing
 while :; do
 	case $1 in
-	-h)
+	-h | --help)
 		show_help
 		;;
 	-e)
@@ -91,7 +91,7 @@ done
 # Extract character from one of the array
 extract() {
 	INDEX=0
-    RNDM=$(cat /dev/urandom | tr -cd '1-9' | head -c 5)
+    RNDM=$(od -vAn -N4 -t u4 < /dev/urandom)
 	RAND=$((RNDM % ${#1} / 2))
 	for i in $1; do
 		if [ $INDEX -eq $RAND ]; then
@@ -122,7 +122,7 @@ checkpass() {
 # Main function used to generate password
 genpass() {
 	for i in $(seq 1 $LENGTH); do
-        RNDM=$(cat /dev/urandom | tr -cd '1-9' | head -c 5)
+        RNDM=$(od -vAn -N4 -t u4 < /dev/urandom)
 		case $((RNDM % MAX)) in
 		0)
 			CHAR=$(extract "$LOWER")
