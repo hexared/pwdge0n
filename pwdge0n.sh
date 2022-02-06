@@ -50,8 +50,8 @@ fi
 LOWER="a b c d e f g h i j k l m n o p q r s t u v w x y z "
 UPPER="A B C D E F G H I J K L M N O P Q R S T U V W X Y Z "
 NUMBERS="0 1 2 3 4 5 6 7 8 9 "
-SYMBOLS="~ . : - _ ; < > | ! \\ £ $ % & / ( ) = ? ^ + * § @ # \" # { }"
-RSYMBOLS="- _ | ! £ $ % & = ? ^ + * § @ # "
+SYMBOLS="~ . : - _ ; < > | ! \\ £ $ % & / ( ) = ? ^ + \* § @ # \" # { }"
+RSYMBOLS="- _ | ! £ $ % & = ? ^ + \* § @ # "
 MAX=4
 E=0
 
@@ -70,9 +70,9 @@ while :; do
 		shift
 		;;
 	*)
-		if [ -z $LENGTH ] && [ -n $1 ]; then
-			if ! [ -z $(grep "[0-9]" <<<$1) ]; then
-				if [ $1 -gt 7 ]; then
+		if [ -z $LENGTH ] && [ -n "$1" ]; then
+			if ! [ -z $(ech $1 | grep "[0-9]") ]; then
+				if [ "$1" -gt 7 ]; then
 					LENGTH=$1
 					shift
 				else
@@ -104,14 +104,14 @@ extract() {
 # Check that passowrd contains at least one char of every group
 checkpass() {
 	for i in [a-z] [A-Z] [0-9]; do
-		GOOD=$(grep "$i" <<<$A)
+		GOOD=$(echo $1 | grep "$i")
 		if [ -z $GOOD ]; then
 			GOOD=0
 			return 1
 		fi
 	done
 	if [ $MAX -eq 4 ]; then
-		GOOD=$(grep "[[:punct:]]" <<<$1)
+		GOOD=$(echo $1 | grep "[[:punct:]]")
 		if [ -z $GOOD ]; then
 			return 1
 		fi
