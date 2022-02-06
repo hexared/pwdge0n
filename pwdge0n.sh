@@ -93,7 +93,8 @@ extract() {
 	INDEX=0
     RNDM=$(cat /dev/urandom | tr -cd '1-9' | head -c 5)
 	RAND=$((RNDM % ${#1} / 2))
-	for i in "$1"; do
+	for i in $1; do
+                set -o noglob
 		if [ $INDEX -eq $RAND ]; then
 			printf "%s" "$i"
 		fi
