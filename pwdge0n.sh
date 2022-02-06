@@ -71,7 +71,7 @@ while :; do
 		;;
 	*)
 		if [ -z $LENGTH ] && [ -n "$1" ]; then
-			if ! [ -z $(ech $1 | grep "[0-9]") ]; then
+			if ! [ -z $(echo $1 | grep "[0-9]") ]; then
 				if [ "$1" -gt 7 ]; then
 					LENGTH=$1
 					shift
