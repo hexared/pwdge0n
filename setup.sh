@@ -27,16 +27,16 @@ EOF
 printf >&2 "\nOption: "
 read -r RES
 
-case $RES in
+case "${RES}" in
 1 | sh)
 	EXTENSION="sh"
 	;;
 2 | python)
 	PYTHON=$(command python3)
-	if [ -z $PYTHON ]; then
+	if [ -z "${PYTHON}" ]; then
 		printf >&2 "You need to install python3 first.\nWanna set up sh version?[Y/n] "
 		read -r R
-		case $R in
+		case "${R}" in
 		n | N | no | NO)
 			exit 1
 			;;
@@ -54,11 +54,11 @@ case $RES in
 	;;
 esac
 
-chmod +x "./pwdge0n.$EXTENSION"
-ln -s "$PWD"/"pwdge0n.$EXTENSION" /usr/local/bin/pwdg || EXISTS=1
-if ! [ -z $EXISTS ]; then
+chmod +x "./pwdge0n.${EXTENSION}"
+ln -s "${PWD}/pwdge0n.${EXTENSION}" /usr/local/bin/pwdg || EXISTS=1
+if [ -n "${EXISTS}" ]; then
 	AEXT=$(ls -l /usr/local/bin/pwdg | tr "." "\n" | tail -n1)
-	case $AEXT in
+	case "${AEXT}" in
 	py)
 		VERSION="python"
 		;;
@@ -66,20 +66,24 @@ if ! [ -z $EXISTS ]; then
 		VERSION="sh"
 		;;
 	*)
-		VERSION="an unrecognized ($AEXT)"
+		VERSION="an unrecognized (${AEXT})"
 		;;
 	esac
-	printf >&2 "You have $VERSION version installed."
+	printf >&2 "You have %s version installed. " "${VERSION}"
 	printf >&2 "Do you want to substitute the actual version?[Y/n] "
 	read -r R
-	case $R in
+	case "${R}" in
 	n | N | no | NO)
 		printf >&2 "Ok then. Bye!"
 		exit 0
 		;;
 	y | Y | yes | YES | *)
 		rm -r /usr/local/bin/pwdg
-		ln -s "$PWD"/"pwdge0n.$EXTENSION" /usr/local/bin/pwdg
+        if [ -z $? ]; then
+		    ln -s "${PWD}/pwdge0n.${EXTENSION}" /usr/local/bin/pwdg
+        else
+            exit 1
+        fi
 		;;
 	esac
 fi
