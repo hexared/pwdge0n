@@ -78,14 +78,15 @@ if [ -n "${EXISTS}" ]; then
 		exit 0
 		;;
 	y | Y | yes | YES | *)
-		rm -r /usr/local/bin/pwdg
-        if [ -z $? ]; then
+		rm /usr/local/bin/pwdg
+        if [ $? -eq 0 ]; then
 		    ln -s "${PWD}/pwdge0n.${EXTENSION}" /usr/local/bin/pwdg
         else
+            printf >&2 "Errors occurred, check your user privileges and retry.\n"
             exit 1
         fi
 		;;
 	esac
 fi
 printf >&2 "Done.\n"
-pwdg
+pwdg -h
