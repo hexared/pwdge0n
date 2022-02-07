@@ -71,7 +71,7 @@ while :; do
 		;;
 	*)
 		if [ -z "${LENGTH}" ] && [ -n "$1" ]; then
-			if ! [ -z $(echo "$1" | grep "[0-9]") ]; then
+			if [ -n $(echo "$1" | grep "[0-9]") ]; then
 				if [ "$1" -gt 7 ]; then
 					LENGTH=$1
 					shift
@@ -144,7 +144,7 @@ genpass() {
 		set -o noglob
 		PASSWORD="${PASSWORD}${CHAR}"
 	done
-	if [ -z $(checkpass "${PASSWORD}") ]; then
+	if ! [ $(checkpass "${PASSWORD}") ]; then
 		printf "%s\n" "${PASSWORD}"
 	else
 		genpass
