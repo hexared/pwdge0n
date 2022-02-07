@@ -70,8 +70,8 @@ while :; do
 		shift
 		;;
 	*)
-		if [ -z $LENGTH ] && [ -n "$1" ]; then
-			if ! [ -z $(echo $1 | grep "[0-9]") ]; then
+		if [ -z "${LENGTH}" ] && [ -n "$1" ]; then
+			if ! [ -z $(echo "$1" | grep "[0-9]") ]; then
 				if [ "$1" -gt 7 ]; then
 					LENGTH=$1
 					shift
@@ -91,10 +91,10 @@ done
 # Extract character from one of the array
 extract() {
 	INDEX=0
-    RNDM=$(od -vAn -N4 -t u4 < /dev/urandom)
+	RNDM=$(od -vAn -N4 -t u4 </dev/urandom)
 	RAND=$((RNDM % ${#1} / 2))
 	for i in $1; do
-		if [ $INDEX -eq $RAND ]; then
+		if [ ${INDEX} -eq ${RAND} ]; then
 			printf "%s" "$i"
 		fi
 		INDEX=$((INDEX + 1))
@@ -104,15 +104,15 @@ extract() {
 # Check that passowrd contains at least one char of every group
 checkpass() {
 	for i in [a-z] [A-Z] [0-9]; do
-		GOOD=$(echo $1 | grep "$i")
-		if [ -z $GOOD ]; then
+		GOOD=$(echo "$1" | grep "$i")
+		if [ -z "${GOOD}" ]; then
 			GOOD=0
 			return 1
 		fi
 	done
-	if [ $MAX -eq 4 ]; then
-		GOOD=$(echo $1 | grep "[[:punct:]]")
-		if [ -z $GOOD ]; then
+	if [ ${MAX} -eq 4 ]; then
+		GOOD=$(echo "$1" | grep "[[:punct:]]")
+		if [ -z "${GOOD}" ]; then
 			return 1
 		fi
 	fi
@@ -121,31 +121,31 @@ checkpass() {
 
 # Main function used to generate password
 genpass() {
-	for i in $(seq 1 $LENGTH); do
-        RNDM=$(od -vAn -N4 -t u4 < /dev/urandom)
+	for i in $(seq 1 "${LENGTH}"); do
+		RNDM=$(od -vAn -N4 -t u4 </dev/urandom)
 		case $((RNDM % MAX)) in
 		0)
-			CHAR=$(extract "$LOWER")
+			CHAR=$(extract "${LOWER}")
 			;;
 		1)
-			CHAR=$(extract "$UPPER")
+			CHAR=$(extract "${UPPER}")
 			;;
 		2)
-			CHAR=$(extract "$NUMBERS")
+			CHAR=$(extract "${NUMBERS}")
 			;;
 		3)
 			if [ $E -gt 0 ]; then
-				CHAR=$(extract "$RSYMBOLS")
+				CHAR=$(extract "${RSYMBOLS}")
 			else
-				CHAR=$(extract "$SYMBOLS")
+				CHAR=$(extract "${SYMBOLS}")
 			fi
 			;;
 		esac
-                set -o noglob
-		PASSWORD="$PASSWORD$CHAR"
+		set -o noglob
+		PASSWORD="${PASSWORD}${CHAR}"
 	done
-    if [ -z $(checkpass "$PASSWORD") ]; then
-		printf "%s\n" "$PASSWORD"
+	if [ -z $(checkpass "${PASSWORD}") ]; then
+		printf "%s\n" "${PASSWORD}"
 	else
 		genpass
 	fi
