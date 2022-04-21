@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 '''
-# SPDX-License-Identifier: GPL-3.0-only
+# SPDX-License-Identifier: GPL-3.0-onlyia
 #
 # This file is part of the pwdge0n project: https://github.com/j4ckr3d/pwdge0n
 #
