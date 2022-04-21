@@ -24,7 +24,7 @@ show_help() {
 
 Usage:
 
-    $0 [-e | -a] <password_length>
+    pwdge0n [-e | -a] <password_length>
 
 Options:
 
